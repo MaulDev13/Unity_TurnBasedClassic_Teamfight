@@ -33,8 +33,6 @@ public class ArenaActionBtn : MonoBehaviour
         {
             cdLayer.fillAmount = 0f;
         }
-
-        
     }
 
     public void OnBtnClick()
@@ -44,9 +42,7 @@ public class ArenaActionBtn : MonoBehaviour
 
         if(mySkill.CheckCD())
         {
-            LocalManager_ArenaUI.instance.ClearActionButton();
-
-            myBattleUnit.Action(mySkill);
+            myBattleUnit.SelectTarget(mySkill);
         }
         else
         {

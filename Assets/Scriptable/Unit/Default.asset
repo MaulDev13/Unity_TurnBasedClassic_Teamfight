@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f39b5c914b3b15d4ab52728cb869b98e, type: 3}
+  m_Name: Default
+  m_EditorClassIdentifier: 
+  unitName: Default
+  art: {fileID: 21300000, guid: cbf8a50c7acc3664aa1be5a0bab682a8, type: 3}
+  healthPoint: 100
+  maxHealtPoint: 10000
+  shieldPoint: 0
+  attackPoint: 10
+  baseAttackPoint: 100
+  movement: 8
+  currentMovement: 0
+  skillSet:
+  - {fileID: 11400000, guid: 5966e8fe224534349b2d3c88f5e62f76, type: 2}
+  - {fileID: 11400000, guid: 4c20ab30116177c48826637544da8f70, type: 2}
+  - {fileID: 11400000, guid: 04d69672f69f5744191fe96e6a3f4bf6, type: 2}
+  - {fileID: 11400000, guid: 8d51ba0daa96c0641aa7e24d9bb156bd, type: 2}

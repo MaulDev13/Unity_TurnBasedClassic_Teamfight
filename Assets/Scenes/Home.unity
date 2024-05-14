@@ -297,9 +297,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14efbf2da60b7754d9b6b5df76feb558, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameSceneName: 
-  unitBase: {fileID: 0}
-  enemyUnitBase: {fileID: 0}
+  customUnitIndex: []
+  fixedUnitNumber: 0
+  unitNumber: 3
 --- !u!4 &114454033
 Transform:
   m_ObjectHideFlags: 0
@@ -371,7 +371,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Turn Based Classic
+  m_text: 'Turn Based Classic
+
+    Team Fight'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1879,7 +1881,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 114454032}
         m_TargetAssemblyTypeName: LocalManager_MainMenu, Assembly-CSharp
-        m_MethodName: OnBtnStart
+        m_MethodName: OnBtnStart_Team
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

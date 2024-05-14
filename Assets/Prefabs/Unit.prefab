@@ -47,9 +47,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myAnim: {fileID: 5184604580658263626}
   myUnit: {fileID: 0}
-  myEnemy: {fileID: 0}
+  myEnemies: []
+  myAllies: []
   isAlive: 0
   isPlayerUnit: 1
+  isAuto: 0
   timeToEndTurn: 0.2
 --- !u!114 &5184604580658263626
 MonoBehaviour:

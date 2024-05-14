@@ -4,7 +4,7 @@ using TMPro;
 
 public class ArenaUnitInfoPanel : MonoBehaviour
 {
-    [SerializeField] private Sprite avatar;
+    [SerializeField] private Sprite avatarDefault;
 
     [SerializeField] private Image avatarHolder;
     [SerializeField] private Image healthBar;
@@ -30,8 +30,15 @@ public class ArenaUnitInfoPanel : MonoBehaviour
 
     public void Init(BattleUnit unit)
     {
-        if (avatarHolder != null && avatar != null)
-            avatarHolder.sprite = avatar;
+        if (avatarHolder != null)
+        {
+            if(unit.myUnit.art != null)
+                avatarHolder.sprite = unit.myUnit.art;
+            else
+                avatarHolder.sprite = avatarDefault;
+        }
+            
+        
 
         myBattleUnit = unit;
 

@@ -6,6 +6,7 @@ public class BattleUnit : MonoBehaviour
 {
     public delegate void UnitEvent();
     public UnitEvent iUpdate;
+    public UnitEvent iMove;
     public UnitEvent iAction;
     public UnitEvent iTakeDamage;
     public UnitEvent iDead;
@@ -16,17 +17,22 @@ public class BattleUnit : MonoBehaviour
     [SerializeField] private BattleUnitAnimation myAnim;
 
     [SerializeField] public Unit myUnit;
-    [HideInInspector] public BattleUnit myEnemy;
+
+    [SerializeField] public List<BattleUnit> myEnemies = new List<BattleUnit>();
+    [SerializeField] public List<BattleUnit> myAllies = new List<BattleUnit>();
 
     [HideInInspector] public bool isAlive;
     [SerializeField] public bool isPlayerUnit = true;
 
+    [SerializeField] public bool isAuto = true;
+
     [SerializeField] private float timeToEndTurn = 0.2f;
+    private float autoDelayTime = 0.2f;
 
     private bool isAct;
     public bool IsAct => isAct;
 
-    public virtual void Init(Unit _unit, bool _isPlayerUnit)
+    public virtual void Init(Unit _unit, bool _isPlayerUnit, string setName)
     {
         isPlayerUnit = _isPlayerUnit;
 
@@ -37,36 +43,40 @@ public class BattleUnit : MonoBehaviour
 
         if (isPlayerUnit)
         {
-            myUnit.unitName = $"Player".ToString(); ;
+            //myUnit.unitName = $"Player".ToString();
+            myUnit.unitName = $"Player" + setName;
         }
         else
         {
-            myUnit.unitName = $"AI".ToString();
+            myUnit.unitName = $"AI" + setName;
         }
 
         ZeroShield();
 
+        myUnit.currentMovement = 0f;
+
         isAlive = true;
         isAct = false;
+
+        autoDelayTime = LocalManager_Arena.instance.enemyDelayAct;
+
+        // Debugging
+        //myUnit.healthPoint = Random.Range(25f, 75f);
 
         iUpdate?.Invoke();
     }
 
     public virtual void Turn()
     {
-        if (LocalManager_Arena.instance.isEnd)
-            return;
-
         CooldownSkill();
 
         iUpdate?.Invoke();
 
         isAct = true;
 
-        if (!isPlayerUnit)
+        if (!isPlayerUnit || isAuto)
         {
             StartCoroutine(MovementAI());
-            //StartCoroutine(MovementAI2());
         }
 
         iUpdate?.Invoke();
@@ -75,17 +85,17 @@ public class BattleUnit : MonoBehaviour
     // AI have a selected skill
     IEnumerator MovementAI(int _index)
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(autoDelayTime);
 
-        Action(myUnit.skillSet[_index]);
+        SelectTarget(myUnit.skillSet[_index]);
 
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(autoDelayTime);
     }
 
     // AI use random selection for search of skill
     IEnumerator MovementAI()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(autoDelayTime);
 
         bool checkAct = false;
         int index = 0;
@@ -97,79 +107,76 @@ public class BattleUnit : MonoBehaviour
             {
                 checkAct = true;
 
-                Action(myUnit.skillSet[index]);
+                SelectTarget(myUnit.skillSet[index]);
             }
 
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(autoDelayTime);
         };
     }
 
-    // AI search for best skill avaliable with reward base method
-    IEnumerator MovementAI2()
+    public virtual void SelectTarget(Skill s)
     {
-        yield return new WaitForSeconds(2f);
-
-        float currentReward = 0f;
-        float nextReward = 0f;
-        int index = -1;
-
-        for(int i = 0; i < myUnit.skillSet.Count; i++)
-        {
-            if (myUnit.skillSet[i].CheckCD())
-            {
-                nextReward = myUnit.skillSet[i].GetValue();
-            }
-            else
-            {
-                nextReward = 0;
-            }
-
-            if (currentReward < nextReward || currentReward == -1)
-            {
-                currentReward = nextReward;
-                index = i;
-            }
-        }
-
-        Action(myUnit.skillSet[index]);
-
-        yield return new WaitForSeconds(0.2f);
-    }
-
-    public virtual void Action(Skill s)
-    {
-        if (LocalManager_Arena.instance.isEnd)
+        if (!isAct)
             return;
 
+        if(!isPlayerUnit || isAuto)
+        {
+            if(!ArenaSelection.instance.AutoSelect(this, s))
+            {
+                Debug.Log("Invalid skill, can't find minimal target");
+                StartCoroutine(MovementAI());
+            }
+
+        }
+        else
+        {
+            ArenaSelection.instance.Init(this, s);
+        }
+    }
+
+    public virtual void Action(Skill s, List<BattleUnit> targets)
+    {
         if (!isAct)
             return;
 
         isAct = false;
 
-        //iAction?.Invoke();
+        iAction?.Invoke();
         iAction2?.Invoke(s);
 
-        s.Use(this, myEnemy);
-        LocalManager_ArenaUI.instance.LastMove($"#{LocalManager_Arena.instance.CurrentTurn} - {s.CreateLastMove(this, myEnemy)}");
-
-        ArenaSelection.instance.Clear();
+        s.Use(this, targets);
+        LocalManager_ArenaUI.instance.LastMove($"#{LocalManager_Arena.instance.CurrentTurn} - {s.CreateLastMove(this, targets)}");
 
         Invoke("EndTurn", timeToEndTurn);
     }
 
     public virtual void EndTurn()
     {
-        if (LocalManager_Arena.instance.isEnd)
-            return;
-
         iUpdate?.Invoke();
-        
-        LocalManager_Arena.instance.EndTurn();
+
+        if (LocalManager_Arena.instance.State == LocalManager_Arena.BattleState.OnTurn)
+            LocalManager_Arena.instance.EndTurn();
+    }
+
+    public float Attack(BattleUnit target, float _value, AttackType _attackType)
+    {
+        var value = target.TakeDamage(_value, _attackType);
+
+        return value;
+    }
+
+    public float Healing(BattleUnit target, float _value)
+    {
+        var value = target.Heal(_value);
+
+        return value;
     }
 
     public float Heal(float _value)
     {
-        if(ChangeHealth(_value) <= 0)
+        _value = Mathf.Round(_value);
+
+        if (ChangeHealth(_value) <= 0)
         {
             Dead();
         }
@@ -199,7 +206,9 @@ public class BattleUnit : MonoBehaviour
             }
         }
 
-        if(_value > 0)
+        _value = Mathf.Round(_value);
+
+        if (_value > 0)
             iTakeDamage?.Invoke();
 
         if (ChangeHealth(-_value) <= 0)
@@ -212,25 +221,43 @@ public class BattleUnit : MonoBehaviour
         return _value;
     }
 
-    public virtual void Dead()
+    public virtual bool Dead()
     {
-        if (LocalManager_Arena.instance.isEnd)
-            return;
-
         isAlive = false;
 
         iDead?.Invoke();
 
         Debug.Log($"{myUnit.unitName} dead!");
 
-        LocalManager_Arena.instance.EndBattle(!isPlayerUnit);
+        //LocalManager_Arena.instance.EndBattle(!isPlayerUnit);
 
         iUpdate?.Invoke();
+
+        return true;
+    }
+
+    public void Move(float value)
+    {
+        myUnit.currentMovement = myUnit.currentMovement + value > 0 ? myUnit.currentMovement + value : 0;
+
+        iMove?.Invoke();
+    }
+
+    public float AddMove()
+    {
+        var value = myUnit.movement >= 0 ? myUnit.movement : 0;
+        return value;
+    }
+
+
+    public float GetMove()
+    {
+        return myUnit.currentMovement;
     }
 
     private float ChangeHealth(float value)
     {
-        myUnit.healthPoint = Mathf.Clamp(myUnit.healthPoint + value, 0f, myUnit.maxHealtPoint);
+        myUnit.healthPoint = Mathf.Round(Mathf.Clamp(myUnit.healthPoint + value, 0f, myUnit.maxHealtPoint));
         return myUnit.healthPoint;
     }
 
@@ -245,11 +272,15 @@ public class BattleUnit : MonoBehaviour
     public void ZeroShield()
     {
         myUnit.shieldPoint = 0f;
+
+        iUpdate?.Invoke();
     }
 
     public void AddShield(float _value)
     {
-        myUnit.shieldPoint += _value;
+        myUnit.shieldPoint += Mathf.Round(_value);
+
+        iUpdate?.Invoke();
     }
 
     public string GetName()

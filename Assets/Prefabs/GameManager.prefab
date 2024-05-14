@@ -43,10 +43,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78aa2475970aff84fa9a134778a2a429, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ArenaSceneName: Arena
+  ArenaScene: Arena
   HomeSceneName: Home
-  isPlayerFirstTurn: 1
-  units:
+  unitIndex:
   - {fileID: 11400000, guid: 7bb43a8b4d29fcd449e00d9914dfa24e, type: 2}
-  playerUnitBase: {fileID: 11400000, guid: 7bb43a8b4d29fcd449e00d9914dfa24e, type: 2}
-  enemyUnitBase: {fileID: 11400000, guid: 7bb43a8b4d29fcd449e00d9914dfa24e, type: 2}
+  - {fileID: 11400000, guid: c51fa70dfd8eb724eafc6a09a31e83e1, type: 2}
+  maxHodlerCount: 3
+  playerUnits: []
+  enemyUnits: []
