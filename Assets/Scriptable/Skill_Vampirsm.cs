@@ -1,14 +1,19 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Skill", menuName = "Skill/Attack")]
-public class Skill_BasicAtk : Skill
+[CreateAssetMenu(fileName = "New Skill", menuName = "Skill/Vampirsm")]
+public class Skill_Vampirsm : Skill
 {
-    public float repeat = 1;
+    public int repeat = 1;
+
     public float additionalDamage = 0;
     public float baseDamageMultiplier = 1f;
 
-    public BaseValue baseValue;
+    public float baseHealMultiplier = 1f;
+
+    public BaseValue attackBaseValue;
+
 
     public AttackType attackType;
 
@@ -25,7 +30,9 @@ public class Skill_BasicAtk : Skill
                     {
                         for (int i = 0; i < repeat; i++)
                         {
-                            user.Attack(target, GetValue(user, baseValue, additionalDamage, baseDamageMultiplier), attackType, this);
+                            var healingPoint = user.Attack(target, GetValue(user, attackBaseValue, additionalDamage, baseDamageMultiplier), attackType, this);
+
+                            user.Healing(user, healingPoint * baseHealMultiplier, this);
                         }
                     }
                 }
@@ -33,11 +40,13 @@ public class Skill_BasicAtk : Skill
             case SkillTarget.AllAllies:
                 foreach (BattleUnit target in user.myAllies)
                 {
-                    if (target.isAlive)
+                    if (target.isAlive && target != user)
                     {
                         for (int i = 0; i < repeat; i++)
                         {
-                            user.Attack(target, GetValue(user, baseValue, additionalDamage, baseDamageMultiplier), attackType, this);
+                            var healingPoint = user.Attack(target, GetValue(user, attackBaseValue, additionalDamage, baseDamageMultiplier), attackType, this);
+
+                            user.Healing(user, healingPoint * baseHealMultiplier, this);
                         }
                     }
                 }
@@ -49,18 +58,22 @@ public class Skill_BasicAtk : Skill
                     {
                         for (int i = 0; i < repeat; i++)
                         {
-                            user.Attack(target, GetValue(user, baseValue, additionalDamage, baseDamageMultiplier), attackType, this);
+                            var healingPoint = user.Attack(target, GetValue(user, attackBaseValue, additionalDamage, baseDamageMultiplier), attackType, this);
+
+                            user.Healing(user, healingPoint * baseHealMultiplier, this);
                         }
                     }
                 }
 
                 foreach (BattleUnit target in user.myAllies)
                 {
-                    if (target.isAlive)
+                    if (target.isAlive && target != user)
                     {
                         for (int i = 0; i < repeat; i++)
                         {
-                            user.Attack(target, GetValue(user, baseValue, additionalDamage, baseDamageMultiplier), attackType, this);
+                            var healingPoint = user.Attack(target, GetValue(user, attackBaseValue, additionalDamage, baseDamageMultiplier), attackType, this);
+
+                            user.Healing(user, healingPoint * baseHealMultiplier, this);
                         }
                     }
                 }
@@ -76,14 +89,13 @@ public class Skill_BasicAtk : Skill
     {
         base.Use(user, targets);
 
-        if(targets.Count > 0)
+        if (targets.Count > 0)
         {
             foreach (BattleUnit target in targets)
             {
-                for (int i = 0; i < repeat; i++)
-                {
-                    user.Attack(target, GetValue(user, baseValue, additionalDamage, baseDamageMultiplier), attackType, this);
-                }
+                var healingPoint = user.Attack(target, GetValue(user, attackBaseValue, additionalDamage, baseDamageMultiplier), attackType, this);
+
+                user.Healing(user, healingPoint * baseHealMultiplier, this);
             }
         }
         else
@@ -94,6 +106,6 @@ public class Skill_BasicAtk : Skill
 
     public override void CreateDesc()
     {
-        skillDesc = $"Deal damage up to {maxTarget} {GetTarget()} with value {additionalDamage}+({baseDamageMultiplier}x{GetBaseValue(baseValue)}) for {repeat} times. Attack type is {GetAttackType(attackType)}";
+        skillDesc = $"Deal damage up to {maxTarget} {GetTarget()} with value {additionalDamage}+({baseDamageMultiplier}x{GetBaseValue(attackBaseValue)}) for {repeat} times. Heal {GetTarget(SkillTarget.Oneself)} by damage dealt";
     }
 }

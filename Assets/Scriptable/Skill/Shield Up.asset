@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92efeae11a79c904a942a492bce9dfe4, type: 3}
+  m_Name: Shield Up
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 22100000, guid: 863490dbf7aa17645af25eb48b4c594c, type: 2}
+  skillName: Shield Up
+  cd: 4
+  currentCd: 0
+  isStartWithZeroCD: 1
+  skillDesc: Gain shield up to 1 Allies with value 4+(0.12xbase health) for 1 times
+  target: 3
+  isLivingTarget: 1
+  maxTarget: 1
+  minTarget: 1
+  repeat: 1
+  additionalShield: 4
+  baseShieldMultiplier: 0.12
+  baseValue: 1

@@ -10,6 +10,66 @@ public class Skill_Heal : Skill
 
     public BaseValue baseValue;
 
+    public override void Use(BattleUnit user)
+    {
+        base.Use(user);
+
+        switch (target)
+        {
+            case SkillTarget.AllEnemies:
+                foreach (BattleUnit target in user.myEnemies)
+                {
+                    if (target.isAlive)
+                    {
+                        for (int i = 0; i < repeat; i++)
+                        {
+                            user.Healing(target, GetValue(user, baseValue, additionalHeal, baseHealMultiplier), this);
+                        }
+                    }
+                }
+                break;
+            case SkillTarget.AllAllies:
+                foreach (BattleUnit target in user.myAllies)
+                {
+                    if (target.isAlive)
+                    {
+                        for (int i = 0; i < repeat; i++)
+                        {
+                            user.Healing(target, GetValue(user, baseValue, additionalHeal, baseHealMultiplier), this);
+                        }
+                    }
+                }
+                break;
+            case SkillTarget.All:
+                foreach (BattleUnit target in user.myAllies)
+                {
+                    if (target.isAlive)
+                    {
+                        for (int i = 0; i < repeat; i++)
+                        {
+                            user.Healing(target, GetValue(user, baseValue, additionalHeal, baseHealMultiplier), this);
+                        }
+                    }
+                }
+
+                foreach (BattleUnit target in user.myEnemies)
+                {
+                    if (target.isAlive)
+                    {
+                        for (int i = 0; i < repeat; i++)
+                        {
+                            user.Healing(target, GetValue(user, baseValue, additionalHeal, baseHealMultiplier), this);
+                        }
+                    }
+                }
+                break;
+            case SkillTarget.Null:
+                break;
+            default:
+                break;
+        }
+    }
+
     public override void Use(BattleUnit user, List<BattleUnit> targets)
     {
         base.Use(user, targets);
@@ -20,7 +80,7 @@ public class Skill_Heal : Skill
             {
                 for (int i = 0; i < repeat; i++)
                 {
-                    user.Healing(target, GetValue(user, baseValue, additionalHeal, baseHealMultiplier));
+                    user.Healing(target, GetValue(user, baseValue, additionalHeal, baseHealMultiplier), this);
                 }
             }
         }

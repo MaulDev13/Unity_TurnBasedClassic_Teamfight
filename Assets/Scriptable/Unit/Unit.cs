@@ -25,6 +25,8 @@ public class Unit : ScriptableObject
     [Tooltip("Skill Set on Unit")]
     [SerializeField] public List<Skill> skillSet = new List<Skill>();
 
+    [SerializeField] public List<Skill> passiveSkills = new List<Skill>();
+
     public void Init(Unit _unit)
     {
         unitName = _unit.unitName;
@@ -55,7 +57,11 @@ public class Unit : ScriptableObject
                 newSkill.currentCd = newSkill.cd;
 
             newSkill.CreateDesc();
-            skillSet.Add(newSkill);
+
+            if (newSkill.isPassive)
+                passiveSkills.Add(newSkill);
+            else
+                skillSet.Add(newSkill);
 
 
             //s.currentCd = 0;

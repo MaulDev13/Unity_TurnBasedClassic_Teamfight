@@ -10,20 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 84484640ca27945459a7cb851180cfa4, type: 3}
-  m_Name: Attack - Basic Attack
+  m_Name: BA 4
   m_EditorClassIdentifier: 
-  _animator: {fileID: 22100000, guid: d6510e966a2686549a73d2756449a4f6, type: 2}
-  skillName: Basic Attack
-  cd: 0
+  _animator: {fileID: 0}
+  actOnSelft_Effect: {fileID: 0}
+  actOnTarget_Effect: {fileID: 0}
+  hit_Effect: {fileID: 0}
+  skillName: Blade Strom
+  cd: 9
   currentCd: 0
   isStartWithZeroCD: 1
-  skillDesc: Deal damage up to 3 Enemies with value 10+(1xattack) for 1 times. Attack
-    type is normal
-  target: 1
+  skillDesc: 
+  target: 4
+  isLivingTarget: 1
   maxTarget: 1
   minTarget: 1
-  repeat: 1
-  additionalDamage: 10
-  baseDamageMultiplier: 1
-  baseValue: 3
+  isPassive: 0
+  skillTags: 0200000003000000
+  repeat: 3
+  additionalDamage: 0
+  baseDamageMultiplier: 0.6
+  baseValue: 0
   attackType: 0

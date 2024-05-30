@@ -7,8 +7,6 @@ public class ArenaLastMove : MonoBehaviour
 
     public void Init(string _value)
     {
-        
-
         descText.text = _value.ToString();
     }
 }

@@ -9,17 +9,15 @@ public class BattleUnitAnimation : MonoBehaviour
 
     private void OnDisable()
     {
-        //battleUnit.iAction -= AnimAct;
         battleUnit.iAction2 -= AnimAct;
-        battleUnit.iTakeDamage -= AnimTakeDamage;
+        battleUnit.iTakeDamage2 -= AnimTakeDamage;
         battleUnit.iDead -= AnimDead;
     }
 
     public void Init(Sprite art)
     {
-        //battleUnit.iAction += AnimAct;
         battleUnit.iAction2 += AnimAct;
-        battleUnit.iTakeDamage += AnimTakeDamage;
+        battleUnit.iTakeDamage2 += AnimTakeDamage;
         battleUnit.iDead += AnimDead;
 
         spriteRenderer.sprite = art;
@@ -43,10 +41,16 @@ public class BattleUnitAnimation : MonoBehaviour
         if(_skill._animator != null)
             animControl.runtimeAnimatorController = _skill._animator;
 
+        if (_skill.actOnSelft_Effect != null)
+            Instantiate(_skill.actOnSelft_Effect, transform.position, Quaternion.identity);
+
+        if(_skill._animator != null)
+            Instantiate(_skill.actOnSelft_Effect, transform.position, Quaternion.identity);
+
         animControl.SetTrigger("Attack");
     }
 
-    public void AnimTakeDamage()
+    public void AnimTakeDamage(Skill _skill)
     {
         animControl.SetTrigger("TakeDamage");
     }

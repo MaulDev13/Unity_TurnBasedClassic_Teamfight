@@ -6,6 +6,11 @@ public enum SkillTarget
 {
     Allies,
     Enemies,
+    Oneself,
+    AllAllies,
+    AllEnemies,
+    All,
+    Null
 }
 
 public enum AttackType
@@ -26,10 +31,22 @@ public enum BaseValue
     Null
 }
 
+public enum Tags
+{
+    BasicAttack,
+    FastAttack,
+    AoE,
+    Sword
+}
+
 [Serializable]
 public class Skill : ScriptableObject
 {
-    [SerializeField] public AnimatorOverrideController _animator;
+    [SerializeField] public AnimatorOverrideController _animator; // On act
+
+    [SerializeField] public GameObject actOnSelft_Effect;
+    [SerializeField] public GameObject actOnTarget_Effect;
+    [SerializeField] public GameObject hit_Effect;
 
     [SerializeField] public string skillName;
 
@@ -45,6 +62,12 @@ public class Skill : ScriptableObject
 
     public int maxTarget = 1;
     public int minTarget = 1;
+
+    public bool isPassive = false;
+
+    public List<Tags> skillTags = new List<Tags>();
+
+    public virtual void Use(BattleUnit user) { }
 
     public virtual void Use(BattleUnit user, List<BattleUnit> targets)
     {
@@ -94,6 +117,12 @@ public class Skill : ScriptableObject
         return $"{user.GetName()} use {skillName}";
     }
 
+    public virtual string CreateLastMove(BattleUnit user)
+    {
+        Debug.Log($"{user.GetName()} use {skillName}");
+        return $"{user.GetName()} use {skillName}";
+    }
+
     public virtual void CreateDesc()
     {
         skillDesc = $"{skillName.ToUpper()} is a skill";
@@ -107,6 +136,40 @@ public class Skill : ScriptableObject
                 return "Allies";
             case SkillTarget.Enemies:
                 return "Enemies";
+            case SkillTarget.Oneself:
+                return "Oneself";
+            case SkillTarget.Null:
+                return "Null";
+            case SkillTarget.AllAllies:
+                return "All allies";
+            case SkillTarget.AllEnemies:
+                return "All enemies";
+            case SkillTarget.All:
+                return "Everyone on arena";
+            default:
+                Debug.LogWarning($"Skill {skillName} not have a target");
+                return "default";
+        }
+    }
+
+    public virtual string GetTarget(SkillTarget _target)
+    {
+        switch (_target)
+        {
+            case SkillTarget.Allies:
+                return "Allies";
+            case SkillTarget.Enemies:
+                return "Enemies";
+            case SkillTarget.Oneself:
+                return "Oneself";
+            case SkillTarget.Null:
+                return "Null";
+            case SkillTarget.AllAllies:
+                return "All allies";
+            case SkillTarget.AllEnemies:
+                return "All enemies";
+            case SkillTarget.All:
+                return "Everyone on arena";
             default:
                 Debug.LogWarning($"Skill {skillName} not have a target");
                 return "default";

@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84484640ca27945459a7cb851180cfa4, type: 3}
+  m_Name: Slash
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 22100000, guid: d6510e966a2686549a73d2756449a4f6, type: 2}
+  skillName: Slash
+  cd: 0
+  currentCd: 0
+  isStartWithZeroCD: 1
+  skillDesc: Deal damage up to 1 Enemies with value 10+(1xattack) for 1 times. Attack
+    type is normal
+  target: 1
+  isLivingTarget: 1
+  maxTarget: 1
+  minTarget: 1
+  repeat: 1
+  additionalDamage: 10
+  baseDamageMultiplier: 1
+  baseValue: 3
+  attackType: 0

@@ -39,6 +39,12 @@ public class ArenaSelection : MonoBehaviour
         unitInAction = _unit;
         selectedSkill = _skill;
 
+        if (!CheckSkillTarget())
+        {
+            NullTarget();
+            return;
+        }
+
         maxSelectedUnitCount = selectedSkill.maxTarget;
     }
 
@@ -99,6 +105,10 @@ public class ArenaSelection : MonoBehaviour
                     return true;
                 else
                     return false;
+            case SkillTarget.Oneself:
+                return false;
+            case SkillTarget.Null:
+                return false;
             default:
                 Debug.LogWarning($"Skill {selectedSkill.skillName} not have a target");
                 return false;
@@ -122,11 +132,25 @@ public class ArenaSelection : MonoBehaviour
 
     public void OnSelectionButton()
     {
-        if (selectedUnits.Count < selectedSkill.minTarget)
-            return;
+        if (!CheckSkillTarget())
+        {
+            NullTarget();
+        }
+        else
+        {
+            if (selectedUnits.Count < selectedSkill.minTarget)
+                return;
 
+            LocalManager_ArenaUI.instance.ClearActionButton();
+            unitInAction.Action(selectedSkill, selectedUnits);
+            Clear();
+        }
+    }
+
+    private void NullTarget()
+    {
         LocalManager_ArenaUI.instance.ClearActionButton();
-        unitInAction.Action(selectedSkill, selectedUnits);        
+        unitInAction.Action(selectedSkill);
         Clear();
     }
 
@@ -136,6 +160,12 @@ public class ArenaSelection : MonoBehaviour
 
         unitInAction = _unit;
         selectedSkill = _skill;
+
+        if (!CheckSkillTarget())
+        {
+            NullTarget();
+            return true;
+        }
 
         currentUnitCount = 0;
         maxSelectedUnitCount = selectedSkill.maxTarget;
@@ -184,8 +214,11 @@ public class ArenaSelection : MonoBehaviour
         if (unitInAction == null || selectedSkill == null)
             return;
 
-        if (selectedUnits.Count < selectedSkill.minTarget)
-            return;
+        if (CheckSkillTarget())
+        {
+            if (selectedUnits.Count < selectedSkill.minTarget)
+                return;
+        }
 
         if (unitInAction.isAuto || !unitInAction.isPlayerUnit)
             return;
@@ -202,5 +235,13 @@ public class ArenaSelection : MonoBehaviour
         }
 
         return false;
+    }
+
+    public bool CheckSkillTarget()
+    {
+        if (selectedSkill.target == SkillTarget.Oneself || selectedSkill.target == SkillTarget.Null || selectedSkill.target == SkillTarget.AllAllies || selectedSkill.target == SkillTarget.AllEnemies)
+            return false;
+
+        return true;
     }
 }

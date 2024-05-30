@@ -1,8 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Skill", menuName = "Skill/Attack")]
-public class Skill_BasicAtk : Skill
+[CreateAssetMenu(fileName = "New Skill", menuName = "Skill/Shield")]
+public class Skill_DoubleEdge : Skill
 {
     public float repeat = 1;
     public float additionalDamage = 0;
@@ -29,11 +30,14 @@ public class Skill_BasicAtk : Skill
                         }
                     }
                 }
+
+                user.TakeDamage(GetValue(user, baseValue, additionalDamage, baseDamageMultiplier), attackType, this);
+
                 break;
             case SkillTarget.AllAllies:
                 foreach (BattleUnit target in user.myAllies)
                 {
-                    if (target.isAlive)
+                    if (target.isAlive && target != user)
                     {
                         for (int i = 0; i < repeat; i++)
                         {
@@ -41,6 +45,9 @@ public class Skill_BasicAtk : Skill
                         }
                     }
                 }
+
+                user.TakeDamage(GetValue(user, baseValue, additionalDamage, baseDamageMultiplier), attackType, this);
+
                 break;
             case SkillTarget.All:
                 foreach (BattleUnit target in user.myEnemies)
@@ -56,7 +63,7 @@ public class Skill_BasicAtk : Skill
 
                 foreach (BattleUnit target in user.myAllies)
                 {
-                    if (target.isAlive)
+                    if (target.isAlive && target != user)
                     {
                         for (int i = 0; i < repeat; i++)
                         {
@@ -64,6 +71,8 @@ public class Skill_BasicAtk : Skill
                         }
                     }
                 }
+
+                user.TakeDamage(GetValue(user, baseValue, additionalDamage, baseDamageMultiplier), attackType, this);
                 break;
             case SkillTarget.Null:
                 break;
@@ -76,7 +85,7 @@ public class Skill_BasicAtk : Skill
     {
         base.Use(user, targets);
 
-        if(targets.Count > 0)
+        if (targets.Count > 0)
         {
             foreach (BattleUnit target in targets)
             {
@@ -85,6 +94,8 @@ public class Skill_BasicAtk : Skill
                     user.Attack(target, GetValue(user, baseValue, additionalDamage, baseDamageMultiplier), attackType, this);
                 }
             }
+
+            user.TakeDamage(GetValue(user, baseValue, additionalDamage, baseDamageMultiplier), attackType, this);
         }
         else
         {
@@ -94,6 +105,6 @@ public class Skill_BasicAtk : Skill
 
     public override void CreateDesc()
     {
-        skillDesc = $"Deal damage up to {maxTarget} {GetTarget()} with value {additionalDamage}+({baseDamageMultiplier}x{GetBaseValue(baseValue)}) for {repeat} times. Attack type is {GetAttackType(attackType)}";
+        skillDesc = $"Deal damage up to {maxTarget} {GetTarget()} with value {additionalDamage}+({baseDamageMultiplier}x{GetBaseValue(baseValue)}) for {repeat} times. Deal damage to {GetTarget(SkillTarget.Oneself)}. Attack type is {GetAttackType(attackType)}";
     }
 }
