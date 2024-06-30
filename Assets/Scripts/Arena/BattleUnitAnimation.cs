@@ -44,8 +44,8 @@ public class BattleUnitAnimation : MonoBehaviour
         if (_skill.actOnSelft_Effect != null)
             Instantiate(_skill.actOnSelft_Effect, transform.position, Quaternion.identity);
 
-        if(_skill._animator != null)
-            Instantiate(_skill.actOnSelft_Effect, transform.position, Quaternion.identity);
+        //if(_skill.actOnTarget_Effect != null)
+            //Instantiate(_skill.actOnTarget_Effect, transform.position, Quaternion.identity);
 
         animControl.SetTrigger("Attack");
     }

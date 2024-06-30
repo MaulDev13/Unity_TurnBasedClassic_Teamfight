@@ -10,25 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 84484640ca27945459a7cb851180cfa4, type: 3}
-  m_Name: BA 2
+  m_Name: BA 4
   m_EditorClassIdentifier: 
   _animator: {fileID: 0}
   actOnSelft_Effect: {fileID: 0}
   actOnTarget_Effect: {fileID: 0}
   hit_Effect: {fileID: 0}
-  skillName: Twin Slash
-  cd: 4
+  skillName: Blade Strom
+  cd: 9
   currentCd: 0
   isStartWithZeroCD: 1
   skillDesc: 
-  target: 1
+  target: 4
   isLivingTarget: 1
   maxTarget: 1
   minTarget: 1
   isPassive: 0
-  skillTags: 0100000003000000
-  repeat: 2
+  skillTags: 
+  repeat: 3
   additionalDamage: 0
-  baseDamageMultiplier: 0.8
-  baseValue: 3
+  baseDamageMultiplier: 0.6
+  baseValue: 0
   attackType: 0

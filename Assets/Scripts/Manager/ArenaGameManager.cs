@@ -24,8 +24,6 @@ public class ArenaGameManager : MonoBehaviour
     [SerializeField] public string ArenaScene;
     [SerializeField] public string HomeSceneName;
 
-    public List<Unit> unitIndex = new List<Unit>();
-
     [SerializeField] private int maxHodlerCount = 3;
 
     [Header("Inspector")]
@@ -84,6 +82,14 @@ public class ArenaGameManager : MonoBehaviour
         SceneManager.LoadScene(ArenaScene, LoadSceneMode.Single);
     }
 
+    public void BattleStart_Team(List<Unit> _allies, List<Unit> _enemies)
+    {
+        playerUnits = CopyUnits(_allies);
+        enemyUnits = CopyUnits(_enemies);
+
+        SceneManager.LoadScene(ArenaScene, LoadSceneMode.Single);
+    }
+
     public void BattleResult(bool isWin)
     {
         playerUnits.Clear();
@@ -115,8 +121,8 @@ public class ArenaGameManager : MonoBehaviour
 
         for (int i = 0; i<number; i++)
         {
-            var index = Random.Range(0, unitIndex.Count);
-            tmpUnits.Add(unitIndex[index]);
+            var index = Random.Range(0, Index.instance.unitIndex.Count);
+            tmpUnits.Add(Index.instance.unitIndex[index]);
         }
 
         return tmpUnits;
@@ -131,8 +137,23 @@ public class ArenaGameManager : MonoBehaviour
 
         for (int i = 0; i < _number; i++)
         {
-            var index = Random.Range(0, unitIndex.Count);
-            tmpUnits.Add(unitIndex[index]);
+            var index = Random.Range(0, Index.instance.unitIndex.Count);
+            tmpUnits.Add(Index.instance.unitIndex[index]);
+        }
+
+        return tmpUnits;
+    }
+
+    public List<Unit> CopyUnits(List<Unit> _units)
+    {
+        if (_units.Count < 1)
+            return null;
+
+        List<Unit> tmpUnits = new List<Unit>();
+
+        for (int i = 0; i < _units.Count; i++)
+        {
+            tmpUnits.Add(_units[i].Clone());
         }
 
         return tmpUnits;

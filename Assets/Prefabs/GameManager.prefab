@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1192114535691583824}
   - component: {fileID: 3357305906616752129}
+  - component: {fileID: 5597339830103266419}
+  - component: {fileID: 1208027644175922166}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -45,9 +47,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ArenaScene: Arena
   HomeSceneName: Home
-  unitIndex:
-  - {fileID: 11400000, guid: 7bb43a8b4d29fcd449e00d9914dfa24e, type: 2}
-  - {fileID: 11400000, guid: c51fa70dfd8eb724eafc6a09a31e83e1, type: 2}
   maxHodlerCount: 3
   playerUnits: []
   enemyUnits: []
+--- !u!114 &5597339830103266419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2356836341919989723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebacffba28f78e8419ca3e4f82ea4022, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitIndex:
+  - {fileID: 11400000, guid: 7bb43a8b4d29fcd449e00d9914dfa24e, type: 2}
+  - {fileID: 11400000, guid: c51fa70dfd8eb724eafc6a09a31e83e1, type: 2}
+  journeyIndex:
+  - {fileID: 11400000, guid: ac2fecbdd863ba346b0f41716cdee68c, type: 2}
+  roadIndex: []
+--- !u!114 &1208027644175922166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2356836341919989723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 235506fe9333e894c87439595ceeb4c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teammate: []

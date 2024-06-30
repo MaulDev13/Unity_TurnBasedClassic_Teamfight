@@ -26,7 +26,7 @@ MonoBehaviour:
   maxTarget: 1
   minTarget: 1
   isPassive: 0
-  skillTags: 00000000
+  skillTags: 
   repeat: 1
   additionalDamage: 0
   baseDamageMultiplier: 0.1

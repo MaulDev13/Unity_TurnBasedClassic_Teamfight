@@ -33,10 +33,7 @@ public enum BaseValue
 
 public enum Tags
 {
-    BasicAttack,
-    FastAttack,
-    AoE,
-    Sword
+    Null
 }
 
 [Serializable]
@@ -63,7 +60,7 @@ public class Skill : ScriptableObject
     public int maxTarget = 1;
     public int minTarget = 1;
 
-    public bool isPassive = false;
+    [SerializeField] public bool isPassive = false;
 
     public List<Tags> skillTags = new List<Tags>();
 

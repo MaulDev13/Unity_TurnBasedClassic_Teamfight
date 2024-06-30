@@ -10,25 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 84484640ca27945459a7cb851180cfa4, type: 3}
-  m_Name: BA 4
+  m_Name: Whirlwind
   m_EditorClassIdentifier: 
-  _animator: {fileID: 0}
+  _animator: {fileID: 22100000, guid: d6510e966a2686549a73d2756449a4f6, type: 2}
   actOnSelft_Effect: {fileID: 0}
   actOnTarget_Effect: {fileID: 0}
   hit_Effect: {fileID: 0}
-  skillName: Blade Strom
-  cd: 9
+  skillName: Whirlwind
+  cd: 6
   currentCd: 0
   isStartWithZeroCD: 1
-  skillDesc: 
+  skillDesc: Deal damage up to 5 All enemies with value 12+(1.5xattack) for 1 times.
+    Attack type is normal
   target: 4
   isLivingTarget: 1
-  maxTarget: 1
+  maxTarget: 5
   minTarget: 1
   isPassive: 0
-  skillTags: 0200000003000000
-  repeat: 3
-  additionalDamage: 0
-  baseDamageMultiplier: 0.6
-  baseValue: 0
+  skillTags: 
+  repeat: 1
+  additionalDamage: 12
+  baseDamageMultiplier: 1.5
+  baseValue: 3
   attackType: 0
